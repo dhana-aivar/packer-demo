@@ -1,0 +1,27 @@
+name: Manual Packer Build
+
+on:
+  workflow_dispatch: # This allows you to click a "Run" button manually
+
+jobs:
+  build-ami:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Packer
+        uses: hashicorp/setup-packer@main
+        with:
+          version: "latest"
+
+      - name: Initialize Packer
+        run: packer init .
+
+      - name: Build AMI
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: "us-west-2" # Match the region in your .pkr.hcl file
+        run: packer build .
