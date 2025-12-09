@@ -8,7 +8,7 @@ packer {
 }
 
 source "amazon-ebs" "ubuntu" {
-  ami_name      = "learn-packer-linux-aws"
+  ami_name = "learn-packer-linux-aws-${formatdate("YYYYMMDD-hhmm", timestamp())}"  
   instance_type = "t3.micro"
   region        = "us-west-2"
   source_ami_filter {
